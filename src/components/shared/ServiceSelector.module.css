@@ -1,0 +1,71 @@
+.buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+.btn {
+  flex: 1;
+  padding: 16px 14px;
+  border: 2px solid #e8e6e0;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+  background: white;
+  font-family: inherit;
+}
+.btn:hover {
+  border-color: #1a2744;
+  background: #f8f9fc;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(26, 39, 68, 0.08);
+}
+.selected {
+  border-color: #1a2744;
+  background: linear-gradient(180deg, #f0f3fa 0%, #e8ecf6 100%);
+  box-shadow: 0 2px 8px rgba(26, 39, 68, 0.12);
+}
+.icon {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+.name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1a2744;
+}
+.desc {
+  font-size: 10px;
+  color: #888;
+  margin-top: 3px;
+  margin-bottom: 10px;
+}
+.features {
+  border-top: 1px solid #e8e6e0;
+  padding-top: 10px;
+  text-align: left;
+}
+.feature {
+  font-size: 10px;
+  color: #666;
+  padding: 2px 0;
+  line-height: 1.5;
+}
+.feature::before {
+  content: '\2713  ';
+  color: #0f6e56;
+  font-weight: 700;
+  font-size: 9px;
+}
+
+@media (max-width: 768px) {
+  .buttons {
+    flex-direction: column;
+  }
+  .btn {
+    padding: 12px 14px;
+  }
+  .icon {
+    font-size: 22px;
+  }
+}

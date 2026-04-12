@@ -1,0 +1,50 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid #e8e6e0;
+  border-radius: 8px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+.row:hover { border-color: #1a2744; }
+.selected {
+  border-color: #1a2744;
+  background: #f0f3fa;
+}
+.dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid #d0ccc4;
+  flex-shrink: 0;
+}
+.dotOn {
+  border-color: #1a2744;
+  background: #1a2744;
+  box-shadow: inset 0 0 0 3px white;
+}
+.label {
+  flex: 1;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.sub {
+  font-size: 10px;
+  color: #888;
+  font-weight: 400;
+  margin-top: 1px;
+}
+
+@media (max-width: 768px) {
+  .row {
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px;
+  }
+  .label {
+    font-size: 10px;
+  }
+}

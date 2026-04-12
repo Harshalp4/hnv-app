@@ -1,0 +1,97 @@
+.letterhead {
+  background: white;
+  border: 1px solid #e8e6e0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.header {
+  background: #1a2744;
+  padding: 1rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.company {
+  color: #c9a84c;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+.tagline {
+  color: #6a80a8;
+  font-size: 9px;
+  margin-top: 3px;
+}
+.contact {
+  text-align: right;
+  font-size: 8.5px;
+  color: #6a80a8;
+  line-height: 1.8;
+}
+.bar {
+  height: 3px;
+  background: linear-gradient(90deg, #c9a84c, #e8c96a, #c9a84c);
+}
+.body {
+  padding: 1.1rem 1.25rem;
+}
+.meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 9px;
+  line-height: 1.8;
+}
+.metaHeader {
+  font-size: 7.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #bbb;
+  margin-bottom: 2px;
+}
+.docTitle {
+  font-size: 14px;
+  font-weight: 800;
+  color: #1a2744;
+  text-align: center;
+  letter-spacing: 1.5px;
+  margin: 0.5rem 0 1rem;
+  text-transform: uppercase;
+}
+.footer {
+  background: #f8f7f4;
+  padding: 0.65rem 1.25rem;
+  border-top: 1px solid #eee;
+  font-size: 8px;
+  color: #bbb;
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 8px;
+    padding: 0.75rem 1rem;
+  }
+  .contact {
+    text-align: left;
+    font-size: 8px;
+  }
+  .company {
+    font-size: 14px;
+  }
+  .meta {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .body {
+    padding: 0.75rem 1rem;
+  }
+  .docTitle {
+    font-size: 12px;
+  }
+  .footer {
+    padding: 0.5rem 1rem;
+  }
+}

@@ -1,0 +1,20 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid #e8e6e0;
+  border-radius: 8px;
+  margin-bottom: 5px;
+}
+.left { flex: 1; }
+.name { font-size: 11px; font-weight: 500; }
+.price {
+  font-size: 10px;
+  color: #888;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}

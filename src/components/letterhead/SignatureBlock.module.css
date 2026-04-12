@@ -1,0 +1,37 @@
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+  font-size: 8px;
+  color: #999;
+}
+.box {
+  text-align: center;
+  width: 150px;
+}
+.line {
+  width: 130px;
+  height: 1px;
+  background: #ddd;
+  margin: 22px auto 4px;
+}
+.name {
+  font-weight: 700;
+  font-size: 8px;
+  color: #444;
+}
+.sub {
+  color: #aaa;
+  font-size: 8px;
+}
+
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  .box {
+    width: auto;
+  }
+}

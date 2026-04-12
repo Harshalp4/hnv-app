@@ -1,0 +1,29 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #f4f3ef;
+  color: #1a1a1a;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+input, select, textarea, button { font-family: inherit; }
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  body {
+    font-size: 13px;
+  }
+
+  html, body {
+    overflow-x: hidden;
+  }
+
+  /* Stack inline 2/3-col grids on mobile */
+  div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media print {
+  body { background: white; }
+}

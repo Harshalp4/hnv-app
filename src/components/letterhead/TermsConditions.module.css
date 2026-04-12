@@ -1,0 +1,27 @@
+.wrapper { margin-top: 0.75rem; }
+.label {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #bbb;
+  margin-bottom: 4px;
+}
+.textarea {
+  width: 100%;
+  font-size: 8px;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 7px;
+  color: #555;
+  font-family: inherit;
+  line-height: 1.7;
+  height: 72px;
+  resize: vertical;
+}
+.text {
+  font-size: 8px;
+  color: #555;
+  line-height: 1.7;
+  white-space: pre-line;
+}

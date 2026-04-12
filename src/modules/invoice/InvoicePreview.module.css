@@ -1,0 +1,374 @@
+.invoice {
+  width: 100%;
+  max-width: 794px;
+  min-height: 1100px;
+  background: #fff;
+  color: #000;
+  font-family: 'Arial', 'Helvetica Neue', sans-serif;
+  font-size: 11px;
+  line-height: 1.4;
+  border: 2px solid #000;
+  box-sizing: border-box;
+}
+
+/* ── Header ── */
+.header {
+  text-align: center;
+  border-bottom: 1px solid #000;
+  padding: 8px 12px;
+}
+
+.companyName {
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.companyAddr {
+  font-size: 10px;
+  white-space: pre-line;
+  margin-bottom: 2px;
+}
+
+.gstLine {
+  font-size: 10px;
+}
+
+.gstLine b {
+  font-weight: 700;
+}
+
+.title {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  border-bottom: 1px solid #000;
+  padding: 4px 0;
+}
+
+/* ── Meta grid ── */
+.metaGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid #000;
+}
+
+.metaLeft {
+  border-right: 1px solid #000;
+}
+
+.metaRight {
+  /* right column */
+}
+
+.metaRow {
+  display: flex;
+  border-bottom: 1px solid #000;
+  min-height: 22px;
+}
+
+.metaRow:last-child {
+  border-bottom: none;
+}
+
+.metaLabel {
+  width: 140px;
+  flex-shrink: 0;
+  padding: 3px 6px;
+  font-size: 10px;
+  color: #000;
+}
+
+.metaValue {
+  flex: 1;
+  padding: 3px 6px;
+  font-size: 10px;
+  font-weight: 600;
+  border-left: 1px solid #000;
+}
+
+/* ── Buyer block ── */
+.buyerBlock {
+  border-bottom: 1px solid #000;
+}
+
+.buyerHeader {
+  padding: 3px 6px;
+  font-size: 10px;
+}
+
+.buyerName {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 6px;
+}
+
+.buyerAddr {
+  font-size: 10px;
+  padding: 1px 6px;
+  white-space: pre-line;
+}
+
+.buyerGst {
+  font-size: 10px;
+  padding: 2px 6px;
+}
+
+/* ── Line items table ── */
+.lineTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.lineTable th {
+  border-bottom: 1px solid #000;
+  border-right: 1px solid #000;
+  padding: 4px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  text-align: center;
+  background: #fff;
+}
+
+.lineTable th:last-child {
+  border-right: none;
+}
+
+.lineTable td {
+  border-bottom: 1px solid #000;
+  border-right: 1px solid #000;
+  padding: 4px 6px;
+  font-size: 10px;
+  vertical-align: top;
+}
+
+.lineTable td:last-child {
+  border-right: none;
+}
+
+.lineTable .right {
+  text-align: right;
+}
+
+.lineTable .center {
+  text-align: center;
+}
+
+.lineTable tfoot td {
+  font-weight: 700;
+  border-bottom: 1px solid #000;
+}
+
+/* ── Totals row ── */
+.totalRow {
+  display: flex;
+  justify-content: flex-end;
+  border-bottom: 1px solid #000;
+  padding: 3px 6px;
+  font-size: 10px;
+}
+
+.totalLabel {
+  width: 180px;
+  text-align: right;
+  padding-right: 12px;
+}
+
+.totalValue {
+  width: 120px;
+  text-align: right;
+  font-weight: 700;
+}
+
+/* ── Tax summary table ── */
+.taxTable {
+  width: 100%;
+  border-collapse: collapse;
+  border-bottom: 1px solid #000;
+}
+
+.taxTable th,
+.taxTable td {
+  border: 1px solid #000;
+  border-top: none;
+  padding: 3px 6px;
+  font-size: 9px;
+  text-align: center;
+}
+
+.taxTable th {
+  font-weight: 700;
+  background: #fff;
+}
+
+.taxTable .right {
+  text-align: right;
+}
+
+/* ── Amount in words ── */
+.amountWords {
+  border-bottom: 1px solid #000;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-style: italic;
+}
+
+.amountWords b {
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* ── Bottom section ── */
+.bottomGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 120px;
+}
+
+.bottomLeft {
+  border-right: 1px solid #000;
+  padding: 6px 8px;
+  font-size: 9px;
+  line-height: 1.6;
+}
+
+.bottomRight {
+  padding: 6px 8px;
+  font-size: 9px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.bankTitle {
+  font-weight: 700;
+  font-size: 10px;
+  margin-bottom: 4px;
+}
+
+.bankRow {
+  display: flex;
+  gap: 4px;
+}
+
+.bankLabel {
+  width: 110px;
+  flex-shrink: 0;
+}
+
+.bankValue {
+  font-weight: 600;
+}
+
+.panRow {
+  margin-top: 6px;
+  font-size: 10px;
+}
+
+.declarationTitle {
+  font-weight: 700;
+  font-size: 10px;
+  margin-bottom: 2px;
+}
+
+.declarationText {
+  font-size: 9px;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.signBlock {
+  text-align: right;
+  margin-top: auto;
+}
+
+.signCompany {
+  font-weight: 700;
+  font-size: 10px;
+  margin-bottom: 30px;
+}
+
+.signLabel {
+  font-size: 9px;
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  border-top: 1px solid #000;
+  padding: 4px 0;
+  font-size: 9px;
+  font-style: italic;
+  color: #333;
+}
+
+/* Scrollable wrapper for line items on mobile */
+.scrollWrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Invoice form wrapper */
+.invoiceForm > div[style] {
+  /* allows inline grids to be targeted */
+}
+
+/* ── Mobile responsive ── */
+@media (max-width: 768px) {
+  .invoice {
+    min-height: auto;
+    font-size: 10px;
+  }
+
+  .companyName {
+    font-size: 14px;
+  }
+
+  .metaLabel {
+    width: 100px;
+  }
+
+  .totalLabel {
+    width: 140px;
+  }
+
+  .totalValue {
+    width: 90px;
+  }
+
+  .bottomGrid {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .bottomLeft {
+    border-right: none;
+    border-bottom: 1px solid #000;
+  }
+
+  .bankLabel {
+    width: 80px;
+  }
+
+  .lineTable th,
+  .lineTable td {
+    padding: 3px 4px;
+    font-size: 9px;
+  }
+
+  .taxTable th,
+  .taxTable td {
+    padding: 2px 4px;
+    font-size: 8px;
+  }
+}
+
+/* ── Print styles ── */
+@media print {
+  .invoice {
+    border: none;
+    width: 100%;
+    min-height: auto;
+  }
+}

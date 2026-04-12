@@ -1,0 +1,26 @@
+.toggle {
+  width: 32px;
+  height: 18px;
+  border-radius: 12px;
+  background: #d0ccc4;
+  cursor: pointer;
+  position: relative;
+  transition: 0.2s;
+  flex-shrink: 0;
+  border: none;
+  padding: 0;
+}
+.toggle.on { background: #0f6e56; }
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: white;
+  transition: 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+.toggle.on::after { left: 16px; }

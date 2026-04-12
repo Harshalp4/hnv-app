@@ -1,0 +1,23 @@
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 4px;
+}
+.chip {
+  padding: 4px 9px;
+  border: 1px solid #e0ddd6;
+  border-radius: 20px;
+  font-size: 10px;
+  cursor: pointer;
+  color: #666;
+  background: white;
+  font-family: inherit;
+}
+.chip:hover { border-color: #1a2744; }
+.chipOn {
+  background: #1a2744;
+  border-color: #1a2744;
+  color: #c9a84c;
+  font-weight: 600;
+}

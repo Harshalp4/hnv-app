@@ -1,0 +1,159 @@
+/* ── Header bar ── */
+.headerBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #1a2744 0%, #2a3a58 100%);
+  border-radius: 14px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 0.75rem;
+  color: white;
+  box-shadow: 0 2px 12px rgba(26, 39, 68, 0.15);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.headerLogo {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #c9a84c, #e8c96a);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1a2744;
+  font-size: 12px;
+  font-weight: 800;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+}
+
+.headerInfo {
+  /* no margin-left needed with gap */
+}
+
+.headerTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: #c9a84c;
+  letter-spacing: 0.3px;
+}
+
+.headerSub {
+  font-size: 10px;
+  color: #8b9cc0;
+  margin-top: 2px;
+}
+
+.versionBadge {
+  font-size: 9px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ── 2-column layout: form + sidebar ── */
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr 290px;
+  gap: 0.75rem;
+  align-items: start;
+}
+
+/* ── Full-width for preview/email steps ── */
+.fullWidth {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ── Sidebar styling ── */
+.sidebarSection {
+  margin-bottom: 0.75rem;
+}
+
+.sidebarTitle {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #999;
+  margin-bottom: 0.5rem;
+  padding-left: 2px;
+}
+
+.tipCard {
+  background: #f8f7f4;
+  border: 1px solid #e8e6e0;
+  border-left: 3px solid #c9a84c;
+  border-radius: 0 10px 10px 0;
+  padding: 12px 14px;
+  font-size: 10px;
+  color: #666;
+  line-height: 1.8;
+}
+
+.tipTitle {
+  font-weight: 700;
+  color: #1a2744;
+  font-size: 10px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.quickStats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 0.75rem;
+}
+
+.statBox {
+  background: white;
+  border: 1px solid #e8e6e0;
+  border-radius: 10px;
+  padding: 10px 12px;
+  text-align: center;
+}
+
+.statValue {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a2744;
+}
+
+.statLabel {
+  font-size: 9px;
+  color: #999;
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+@media (max-width: 768px) {
+  .headerBar {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    padding: 0.75rem 1rem;
+  }
+
+  .twoCol {
+    grid-template-columns: 1fr;
+  }
+
+  .fullWidth {
+    max-width: 100%;
+  }
+
+  .quickStats {
+    grid-template-columns: 1fr 1fr;
+  }
+}

@@ -1,0 +1,26 @@
+.sec {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #1a2744;
+  margin: 14px 0 8px;
+  padding-top: 12px;
+  border-top: 2px solid #f0ede8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sec::before {
+  content: '';
+  width: 3px;
+  height: 14px;
+  background: #c9a84c;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.first {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}

@@ -1,0 +1,44 @@
+.wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.75rem;
+}
+.box {
+  width: 215px;
+  font-size: 9px;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 3px 0;
+  border-bottom: 1px solid #f0ede8;
+}
+.discount { color: #0f6e56; }
+.grand {
+  font-weight: 800;
+  font-size: 13px;
+  color: #1a2744;
+  border-top: 2px solid #1a2744;
+  border-bottom: none;
+  padding-top: 6px;
+  margin-top: 3px;
+}
+.words {
+  margin-top: 0.5rem;
+  font-size: 8px;
+  color: #777;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    justify-content: center;
+  }
+  .box {
+    width: 100%;
+    max-width: 240px;
+  }
+  .grand {
+    font-size: 12px;
+  }
+}
