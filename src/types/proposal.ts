@@ -3,6 +3,7 @@ export interface ProposalSection {
   title: string;
   content: string;
   collapsed: boolean;
+  enabled: boolean;
 }
 
 export interface PricingRow {
@@ -16,11 +17,21 @@ export interface PricingRow {
 export interface ProposalState {
   clientName: string;
   clientAddress: string;
+  companyName: string;
+  companyAddress: string;
+  companyGst: string;
+  companyCin: string;
+  companyEmail: string;
+  companyPhone: string;
   projectTitle: string;
   date: string;
   refNumber: string;
   validUntil: string;
   pricingRows: PricingRow[];
   pricingNote: string;
+  pricingEnabled: boolean;
+  coverEnabled: boolean;
+  signatureEnabled: boolean;
+  footerEnabled: boolean;
   sections: ProposalSection[];
 }

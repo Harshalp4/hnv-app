@@ -10,7 +10,6 @@ export function ProposalPage() {
 
   const handlePdf = async () => {
     if (docRef.current) {
-      // Hide editing UI for PDF
       docRef.current.querySelectorAll('[data-no-print]').forEach((el) => {
         (el as HTMLElement).style.display = 'none';
       });
@@ -18,7 +17,6 @@ export function ProposalPage() {
         el.removeAttribute('contenteditable');
       });
       await generatePdf(docRef.current, `${store.refNumber}_Proposal.pdf`);
-      // Restore
       window.location.reload();
     }
   };
@@ -27,17 +25,16 @@ export function ProposalPage() {
     window.print();
   };
 
-  /** Replace {{clientName}} in content */
   const replacePlaceholders = useCallback(
     (text: string) =>
-      text.replace(/\{\{clientName\}\}/g, store.clientName || '[Client Name]'),
-    [store.clientName]
+      text
+        .replace(/\{\{clientName\}\}/g, store.clientName || '[Client Name]')
+        .replace(/\{\{companyName\}\}/g, store.companyName || '[Company Name]'),
+    [store.clientName, store.companyName]
   );
 
-  /** Definition list terms for Section 9 */
   const DL_TERMS = ['Billing Cycle', 'Payment Due', 'Payment Mode', 'Taxes', 'Minimum Monthly Billing', 'Late Payment'];
 
-  /** Render section content with bullet styling and sub-headings */
   const renderFormattedText = (text: string) => {
     const resolved = replacePlaceholders(text);
     const lines = resolved.split('\n');
@@ -55,7 +52,8 @@ export function ProposalPage() {
         );
       } else if (
         /^\d+\.\d+\s/.test(trimmed) ||
-        /^(Document Management|Software Development|Software Support|Why HNV)/.test(trimmed)
+        trimmed.endsWith(':') ||
+        /^[A-Z][A-Za-z\s&,\-()]+$/.test(trimmed) && trimmed.length < 80 && trimmed.split(' ').length <= 10
       ) {
         elements.push(
           <div key={i} className={css.subHeading}>
@@ -93,7 +91,6 @@ export function ProposalPage() {
     }
   };
 
-  /** Helper for inline contentEditable span */
   const Editable = ({
     value,
     onChange,
@@ -123,248 +120,363 @@ export function ProposalPage() {
     />
   );
 
+  /** Count enabled sections for numbering in export */
+  const enabledSections = store.sections.filter((s) => s.enabled);
+  const enabledCount = enabledSections.length + (store.pricingEnabled ? 1 : 0);
+
   return (
-    <div>
-      {/* Header bar */}
-      <div className={css.headerBar}>
-        <div className={css.headerLeft}>
-          <div className={css.headerLogo}>HNV</div>
-          <div className={css.headerInfo}>
-            <div className={css.headerTitle}>Proposal Editor</div>
-            <div className={css.headerSub}>Click any text on the document to edit in place</div>
-          </div>
-        </div>
-        <div className={css.headerActions}>
-          <Button variant="ghost" onClick={() => store.reset()}>Reset</Button>
-          <Button variant="ghost" onClick={handlePrint}>Print</Button>
-          <Button onClick={handlePdf}>Download PDF</Button>
+    <div className={css.pageLayout}>
+      {/* Left: Section control panel */}
+      <div className={css.controlPanel} data-no-print>
+        <div className={css.controlHeader}>Sections</div>
+        <div className={css.controlHint}>Toggle sections to include in export</div>
+
+        <label className={css.checkItem}>
+          <input
+            type="checkbox"
+            checked={store.coverEnabled}
+            onChange={() => store.setCoverEnabled(!store.coverEnabled)}
+          />
+          <span>Cover Page</span>
+        </label>
+
+        {store.sections.map((section) => (
+          <label key={section.id} className={css.checkItem}>
+            <input
+              type="checkbox"
+              checked={section.enabled}
+              onChange={() => store.toggleSectionEnabled(section.id)}
+            />
+            <span>{section.title}</span>
+          </label>
+        ))}
+
+        <label className={css.checkItem}>
+          <input
+            type="checkbox"
+            checked={store.pricingEnabled}
+            onChange={() => store.setPricingEnabled(!store.pricingEnabled)}
+          />
+          <span>Pricing</span>
+        </label>
+
+        <label className={css.checkItem}>
+          <input
+            type="checkbox"
+            checked={store.signatureEnabled}
+            onChange={() => store.setSignatureEnabled(!store.signatureEnabled)}
+          />
+          <span>Signature Block</span>
+        </label>
+
+        <label className={css.checkItem}>
+          <input
+            type="checkbox"
+            checked={store.footerEnabled}
+            onChange={() => store.setFooterEnabled(!store.footerEnabled)}
+          />
+          <span>Footer</span>
+        </label>
+
+        <div className={css.controlDivider} />
+
+        <button className={css.addSectionBtn} onClick={() => store.addSection()}>
+          + Add Section
+        </button>
+
+        <div className={css.controlStats}>
+          {enabledCount} of {store.sections.length + 4} sections selected
         </div>
       </div>
 
-      {/* Document preview — everything is inline-editable */}
-      <div ref={docRef} className={css.document}>
-        {/* Cover page */}
-        <div className={css.coverPage}>
-          <div className={css.coverAccent} />
-          <div className={css.coverLogo}>HNV Techno Solutions Pvt. Ltd.</div>
-          <div className={css.coverTitle}>
-            <Editable
-              value={store.projectTitle.toUpperCase()}
-              onChange={(v) => store.setProjectTitle(v)}
-            />
+      {/* Right: Document */}
+      <div className={css.docArea}>
+        {/* Header bar */}
+        <div className={css.headerBar} data-no-print>
+          <div className={css.headerLeft}>
+            <div className={css.headerLogo}>PRO</div>
+            <div className={css.headerInfo}>
+              <div className={css.headerTitle}>Proposal Editor</div>
+              <div className={css.headerSub}>Click any text to edit &bull; Toggle sections from the left panel</div>
+            </div>
           </div>
-          <div className={css.coverSubtitle}>Service Proposal</div>
-          <div className={css.coverDivider} />
-          <div className={css.coverMeta}>
-            <div className={css.coverMetaGroup}>
-              <span className={css.coverMetaLabel}>Prepared for</span>
-              <Editable value={store.clientName || '[Client Name]'} onChange={store.setClientName} />
-              <Editable
-                value={store.clientAddress}
-                onChange={store.setClientAddress}
-                tag="div"
-                multiline
-                style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', marginTop: 2 }}
-              />
-            </div>
-            <div className={css.coverMetaGroup}>
-              <span className={css.coverMetaLabel}>Prepared by</span>
-              <span>HNV Techno Solutions Pvt. Ltd.</span>
-              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', marginTop: 2 }}>
-                Mahape, Navi Mumbai, Maharashtra
-                <br />
-                GST: 27AAICH4615H1ZK &nbsp;|&nbsp; CIN: U62099MH2026PTC467022
-              </div>
-            </div>
-            <div className={css.coverMetaRow}>
-              <div>
-                <span className={css.coverMetaLabel}>Date:</span>{' '}
-                <input
-                  type="date"
-                  value={store.date}
-                  onChange={(e) => store.setDate(e.target.value)}
-                  className={css.inlineDateInput}
-                />
-                <span style={{ marginLeft: 8, fontSize: 12, opacity: 0.7 }}>({formatDate(store.date)})</span>
-              </div>
-              <div>
-                <span className={css.coverMetaLabel}>Proposal No:</span>{' '}
-                <Editable value={store.refNumber} onChange={store.setRefNumber} />
-              </div>
-              <div>
-                <span className={css.coverMetaLabel}>Valid Until:</span>{' '}
-                <Editable value={store.validUntil} onChange={store.setValidUntil} />
-              </div>
-            </div>
+          <div className={css.headerActions}>
+            <Button variant="ghost" onClick={() => store.reset()}>Reset</Button>
+            <Button variant="ghost" onClick={handlePrint}>Print</Button>
+            <Button onClick={handlePdf}>Download PDF</Button>
           </div>
         </div>
 
-        {/* Body sections */}
-        <div className={css.body}>
-          {store.sections.map((section, idx) => (
-            <div key={section.id}>
-              {/* Insert pricing section after scope (section 4, index 3) */}
-              {idx === 4 && (
-                <div className={css.section}>
-                  <div className={css.sectionHeader}>
-                    <div className={css.sectionTitle}>5. Pricing</div>
+        <div ref={docRef} className={css.document}>
+          {/* Cover page */}
+          {store.coverEnabled && (
+            <div className={css.coverPage}>
+              <div className={css.coverAccent} />
+              <div className={css.coverLogo}>
+                <Editable value={store.companyName} onChange={store.setCompanyName} />
+              </div>
+              <div className={css.coverTitle}>
+                <Editable
+                  value={store.projectTitle.toUpperCase()}
+                  onChange={(v) => store.setProjectTitle(v)}
+                />
+              </div>
+              <div className={css.coverSubtitle}>Service Proposal</div>
+              <div className={css.coverDivider} />
+              <div className={css.coverMeta}>
+                <div className={css.coverMetaGroup}>
+                  <span className={css.coverMetaLabel}>Prepared for</span>
+                  <Editable value={store.clientName || '[Client Name]'} onChange={store.setClientName} />
+                  <Editable
+                    value={store.clientAddress}
+                    onChange={store.setClientAddress}
+                    tag="div"
+                    multiline
+                    style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', marginTop: 2 }}
+                  />
+                </div>
+                <div className={css.coverMetaGroup}>
+                  <span className={css.coverMetaLabel}>Prepared by</span>
+                  <Editable value={store.companyName} onChange={store.setCompanyName} />
+                  <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.65)', marginTop: 2 }}>
+                    <Editable
+                      value={store.companyAddress}
+                      onChange={store.setCompanyAddress}
+                      tag="div"
+                      multiline
+                    />
+                    {(store.companyGst || store.companyCin) && (
+                      <div style={{ marginTop: 2 }}>
+                        {store.companyGst && <>GST: <Editable value={store.companyGst} onChange={store.setCompanyGst} /></>}
+                        {store.companyGst && store.companyCin && <>&nbsp;|&nbsp;</>}
+                        {store.companyCin && <>CIN: <Editable value={store.companyCin} onChange={store.setCompanyCin} /></>}
+                      </div>
+                    )}
                   </div>
-                  <div className={css.sectionContent}>
-                    <div style={{ marginBottom: 12 }}>
-                      Our pricing is based on a per-image model. All document preparation and document operations are included in the per-image rate.
-                    </div>
+                </div>
+                <div className={css.coverMetaRow}>
+                  <div>
+                    <span className={css.coverMetaLabel}>Date:</span>{' '}
+                    <input
+                      type="date"
+                      value={store.date}
+                      onChange={(e) => store.setDate(e.target.value)}
+                      className={css.inlineDateInput}
+                    />
+                    <span style={{ marginLeft: 8, fontSize: 12, opacity: 0.7 }}>({formatDate(store.date)})</span>
+                  </div>
+                  <div>
+                    <span className={css.coverMetaLabel}>Proposal No:</span>{' '}
+                    <Editable value={store.refNumber} onChange={store.setRefNumber} />
+                  </div>
+                  <div>
+                    <span className={css.coverMetaLabel}>Valid Until:</span>{' '}
+                    <Editable value={store.validUntil} onChange={store.setValidUntil} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
-                    <table className={css.pricingTable}>
-                      <thead>
-                        <tr>
-                          <th>Service</th>
-                          <th>Rate</th>
-                          <th>Unit</th>
-                          <th>Remarks</th>
-                          <th data-no-print style={{ width: 36, background: 'transparent', border: 'none' }} />
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {store.pricingRows.map((row) => (
-                          <tr key={row.id}>
-                            <td>
-                              <div
-                                className={css.cellText}
-                                contentEditable
-                                suppressContentEditableWarning
-                                onBlur={(e) => {
-                                  const v = e.currentTarget.textContent || '';
-                                  if (v !== row.service) store.updatePricingRow(row.id, 'service', v);
-                                }}
-                                dangerouslySetInnerHTML={{ __html: row.service }}
-                              />
-                            </td>
-                            <td>
-                              <div
-                                className={css.cellText}
-                                contentEditable
-                                suppressContentEditableWarning
-                                onBlur={(e) => {
-                                  const v = e.currentTarget.textContent || '';
-                                  if (v !== row.rate) store.updatePricingRow(row.id, 'rate', v);
-                                }}
-                                dangerouslySetInnerHTML={{ __html: row.rate }}
-                              />
-                            </td>
-                            <td>
-                              <div
-                                className={css.cellText}
-                                contentEditable
-                                suppressContentEditableWarning
-                                onBlur={(e) => {
-                                  const v = e.currentTarget.textContent || '';
-                                  if (v !== row.unit) store.updatePricingRow(row.id, 'unit', v);
-                                }}
-                                dangerouslySetInnerHTML={{ __html: row.unit }}
-                              />
-                            </td>
-                            <td>
-                              <div
-                                className={css.cellText}
-                                contentEditable
-                                suppressContentEditableWarning
-                                onBlur={(e) => {
-                                  const v = e.currentTarget.textContent || '';
-                                  if (v !== row.remarks) store.updatePricingRow(row.id, 'remarks', v);
-                                }}
-                                dangerouslySetInnerHTML={{ __html: row.remarks }}
-                              />
-                            </td>
-                            <td data-no-print style={{ textAlign: 'center', border: 'none', background: 'transparent' }}>
-                              <button
-                                className={css.removeRowBtn}
-                                onClick={() => store.removePricingRow(row.id)}
-                                title="Remove row"
-                              >
-                                &times;
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+          {/* Body sections */}
+          <div className={css.body}>
+            {store.sections.map((section) => {
+              if (!section.enabled) return null;
 
-                    <div data-no-print style={{ marginTop: 8, marginBottom: 12 }}>
-                      <button className={css.addRowBtn} onClick={() => store.addPricingRow()}>
-                        + Add Service Row
+              return (
+                <div key={section.id}>
+                  <div className={css.section}>
+                    <div className={css.sectionHeader}>
+                      <div
+                        className={`${css.sectionTitle} ${css.editable}`}
+                        contentEditable
+                        suppressContentEditableWarning
+                        onBlur={(e) => {
+                          const v = e.currentTarget.textContent || '';
+                          if (v !== section.title) store.updateSectionTitle(section.id, v);
+                        }}
+                      >
+                        {section.title}
+                      </div>
+                      <button
+                        data-no-print
+                        className={css.removeRowBtn}
+                        onClick={() => store.removeSection(section.id)}
+                        title="Remove section"
+                        style={{ marginLeft: 8 }}
+                      >
+                        &times;
                       </button>
                     </div>
-
-                    {/* Editable pricing note */}
                     <div
-                      className={css.pricingNote}
+                      className={`${css.sectionContent} ${css.editableContent}`}
                       contentEditable
                       suppressContentEditableWarning
                       onBlur={(e) => {
                         const newVal = e.currentTarget.innerText;
-                        if (newVal !== store.pricingNote) store.setPricingNote(newVal);
+                        if (newVal !== section.content) {
+                          store.updateSection(section.id, newVal);
+                        }
                       }}
-                      dangerouslySetInnerHTML={{ __html: store.pricingNote.replace(/\n/g, '<br>') }}
-                    />
+                    >
+                      {renderFormattedText(replacePlaceholders(section.content))}
+                    </div>
                   </div>
                 </div>
-              )}
+              );
+            })}
 
-              {/* Regular section — inline editable */}
+            {/* Pricing section */}
+            {store.pricingEnabled && (
               <div className={css.section}>
                 <div className={css.sectionHeader}>
-                  <div className={css.sectionTitle}>{section.title}</div>
+                  <div className={css.sectionTitle}>Pricing</div>
                 </div>
-                <div
-                  className={`${css.sectionContent} ${css.editableContent}`}
-                  contentEditable
-                  suppressContentEditableWarning
-                  onBlur={(e) => {
-                    const newVal = e.currentTarget.innerText;
-                    if (newVal !== section.content) {
-                      store.updateSection(section.id, newVal);
-                    }
-                  }}
-                >
-                  {renderFormattedText(replacePlaceholders(section.content))}
+                <div className={css.sectionContent}>
+                  <div style={{ marginBottom: 12 }}>
+                    <div
+                      className={css.editableContent}
+                      contentEditable
+                      suppressContentEditableWarning
+                      style={{ display: 'inline' }}
+                    >
+                      Our pricing for the proposed engagement is as follows:
+                    </div>
+                  </div>
+
+                  <table className={css.pricingTable}>
+                    <thead>
+                      <tr>
+                        <th>Service</th>
+                        <th>Rate</th>
+                        <th>Unit</th>
+                        <th>Remarks</th>
+                        <th data-no-print style={{ width: 36, background: 'transparent', border: 'none' }} />
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {store.pricingRows.map((row) => (
+                        <tr key={row.id}>
+                          <td>
+                            <div
+                              className={css.cellText}
+                              contentEditable
+                              suppressContentEditableWarning
+                              onBlur={(e) => {
+                                const v = e.currentTarget.textContent || '';
+                                if (v !== row.service) store.updatePricingRow(row.id, 'service', v);
+                              }}
+                              dangerouslySetInnerHTML={{ __html: row.service }}
+                            />
+                          </td>
+                          <td>
+                            <div
+                              className={css.cellText}
+                              contentEditable
+                              suppressContentEditableWarning
+                              onBlur={(e) => {
+                                const v = e.currentTarget.textContent || '';
+                                if (v !== row.rate) store.updatePricingRow(row.id, 'rate', v);
+                              }}
+                              dangerouslySetInnerHTML={{ __html: row.rate }}
+                            />
+                          </td>
+                          <td>
+                            <div
+                              className={css.cellText}
+                              contentEditable
+                              suppressContentEditableWarning
+                              onBlur={(e) => {
+                                const v = e.currentTarget.textContent || '';
+                                if (v !== row.unit) store.updatePricingRow(row.id, 'unit', v);
+                              }}
+                              dangerouslySetInnerHTML={{ __html: row.unit }}
+                            />
+                          </td>
+                          <td>
+                            <div
+                              className={css.cellText}
+                              contentEditable
+                              suppressContentEditableWarning
+                              onBlur={(e) => {
+                                const v = e.currentTarget.textContent || '';
+                                if (v !== row.remarks) store.updatePricingRow(row.id, 'remarks', v);
+                              }}
+                              dangerouslySetInnerHTML={{ __html: row.remarks }}
+                            />
+                          </td>
+                          <td data-no-print style={{ textAlign: 'center', border: 'none', background: 'transparent' }}>
+                            <button
+                              className={css.removeRowBtn}
+                              onClick={() => store.removePricingRow(row.id)}
+                              title="Remove row"
+                            >
+                              &times;
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+
+                  <div data-no-print style={{ marginTop: 8, marginBottom: 12 }}>
+                    <button className={css.addRowBtn} onClick={() => store.addPricingRow()}>
+                      + Add Service Row
+                    </button>
+                  </div>
+
+                  <div
+                    className={css.pricingNote}
+                    contentEditable
+                    suppressContentEditableWarning
+                    onBlur={(e) => {
+                      const newVal = e.currentTarget.innerText;
+                      if (newVal !== store.pricingNote) store.setPricingNote(newVal);
+                    }}
+                    dangerouslySetInnerHTML={{ __html: store.pricingNote.replace(/\n/g, '<br>') }}
+                  />
                 </div>
               </div>
-            </div>
-          ))}
+            )}
 
-          {/* Signature blocks — matching DOCX */}
-          <div className={css.signatureArea}>
-            <div className={css.signatureBlock}>
-              <div className={css.signatureLabel}>For: HNV Techno Solutions Pvt. Ltd.</div>
-              <div className={css.signatureLine} />
-              <div className={css.signatureCaption}>Authorized Signatory</div>
-              <div className={css.signatureField}>Name: ___________________________</div>
-              <div className={css.signatureField}>Designation: ____________________</div>
-              <div className={css.signatureField}>Date: ___________________________</div>
-              <div className={css.signatureField}>Company Seal:</div>
-            </div>
-            <div className={css.signatureBlock}>
-              <div className={css.signatureLabel}>For: {store.clientName || '[Client Name]'}</div>
-              <div className={css.signatureLine} />
-              <div className={css.signatureCaption}>Authorized Signatory</div>
-              <div className={css.signatureField}>Name: ___________________________</div>
-              <div className={css.signatureField}>Designation: ____________________</div>
-              <div className={css.signatureField}>Date: ___________________________</div>
-              <div className={css.signatureField}>Company Seal:</div>
-            </div>
+            {/* Signature blocks */}
+            {store.signatureEnabled && (
+              <div className={css.signatureArea}>
+                <div className={css.signatureBlock}>
+                  <div className={css.signatureLabel}>For: {store.companyName}</div>
+                  <div className={css.signatureLine} />
+                  <div className={css.signatureCaption}>Authorized Signatory</div>
+                  <div className={css.signatureField}>Name: ___________________________</div>
+                  <div className={css.signatureField}>Designation: ____________________</div>
+                  <div className={css.signatureField}>Date: ___________________________</div>
+                  <div className={css.signatureField}>Company Seal:</div>
+                </div>
+                <div className={css.signatureBlock}>
+                  <div className={css.signatureLabel}>For: {store.clientName || '[Client Name]'}</div>
+                  <div className={css.signatureLine} />
+                  <div className={css.signatureCaption}>Authorized Signatory</div>
+                  <div className={css.signatureField}>Name: ___________________________</div>
+                  <div className={css.signatureField}>Designation: ____________________</div>
+                  <div className={css.signatureField}>Date: ___________________________</div>
+                  <div className={css.signatureField}>Company Seal:</div>
+                </div>
+              </div>
+            )}
           </div>
-        </div>
 
-        {/* Footer — matching DOCX */}
-        <div className={css.footer}>
-          <div className={css.footerLabel}>For queries, please contact:</div>
-          <span className={css.footerGold}>HNV Techno Solutions Pvt. Ltd.</span>
-          <br />
-          Mahape, Navi Mumbai, Maharashtra
-          <br />
-          GST: 27AAICH4615H1ZK &nbsp;|&nbsp; CIN: U62099MH2026PTC467022
-          <br />
-          Email: info@hnvtechno.com &nbsp;|&nbsp; Phone: +91 XXXXX XXXXX
+          {/* Footer */}
+          {store.footerEnabled && (
+            <div className={css.footer}>
+              <div className={css.footerLabel}>For queries, please contact:</div>
+              <span className={css.footerGold}>{store.companyName}</span>
+              <br />
+              {store.companyAddress}
+              <br />
+              {store.companyGst && <>GST: {store.companyGst} &nbsp;|&nbsp; </>}
+              {store.companyCin && <>CIN: {store.companyCin}<br /></>}
+              Email: {store.companyEmail} &nbsp;|&nbsp; Phone: {store.companyPhone}
+            </div>
+          )}
         </div>
       </div>
     </div>
