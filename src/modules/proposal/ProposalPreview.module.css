@@ -469,18 +469,46 @@
   height: 30px;
 }
 
-.signatureCaption {
-  font-size: 12px;
-  font-weight: 600;
-  color: #1a2744;
-  margin-bottom: 16px;
-}
-
 .signatureField {
   font-size: 11px;
   color: #666;
   margin-bottom: 6px;
   line-height: 1.6;
+  outline: none;
+  border-radius: 2px;
+  padding: 1px 2px;
+  cursor: text;
+  transition: background 0.15s;
+}
+
+.signatureField:hover {
+  background: rgba(201, 168, 76, 0.06);
+}
+
+.signatureField:focus {
+  background: #fffdf5;
+  box-shadow: inset 0 0 0 1px #c9a84c;
+}
+
+.signatureCaption {
+  font-size: 12px;
+  font-weight: 600;
+  color: #1a2744;
+  margin-bottom: 16px;
+  outline: none;
+  cursor: text;
+  border-radius: 2px;
+  padding: 1px 2px;
+  transition: background 0.15s;
+}
+
+.signatureCaption:hover {
+  background: rgba(201, 168, 76, 0.06);
+}
+
+.signatureCaption:focus {
+  background: #fffdf5;
+  box-shadow: inset 0 0 0 1px #c9a84c;
 }
 
 /* Footer */

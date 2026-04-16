@@ -443,22 +443,26 @@ export function ProposalPage() {
             {store.signatureEnabled && (
               <div className={css.signatureArea}>
                 <div className={css.signatureBlock}>
-                  <div className={css.signatureLabel}>For: {store.companyName}</div>
+                  <div className={css.signatureLabel}>
+                    For: <Editable value={store.companyName} onChange={store.setCompanyName} />
+                  </div>
                   <div className={css.signatureLine} />
-                  <div className={css.signatureCaption}>Authorized Signatory</div>
-                  <div className={css.signatureField}>Name: ___________________________</div>
-                  <div className={css.signatureField}>Designation: ____________________</div>
-                  <div className={css.signatureField}>Date: ___________________________</div>
-                  <div className={css.signatureField}>Company Seal:</div>
+                  <div className={css.signatureCaption} contentEditable suppressContentEditableWarning>Authorized Signatory</div>
+                  <div className={css.signatureField} contentEditable suppressContentEditableWarning>Name: ___________________________</div>
+                  <div className={css.signatureField} contentEditable suppressContentEditableWarning>Designation: ____________________</div>
+                  <div className={css.signatureField} contentEditable suppressContentEditableWarning>Date: ___________________________</div>
+                  <div className={css.signatureField} contentEditable suppressContentEditableWarning>Company Seal:</div>
                 </div>
                 <div className={css.signatureBlock}>
-                  <div className={css.signatureLabel}>For: {store.clientName || '[Client Name]'}</div>
+                  <div className={css.signatureLabel}>
+                    For: <Editable value={store.clientName || '[Client Name]'} onChange={store.setClientName} />
+                  </div>
                   <div className={css.signatureLine} />
-                  <div className={css.signatureCaption}>Authorized Signatory</div>
-                  <div className={css.signatureField}>Name: ___________________________</div>
-                  <div className={css.signatureField}>Designation: ____________________</div>
-                  <div className={css.signatureField}>Date: ___________________________</div>
-                  <div className={css.signatureField}>Company Seal:</div>
+                  <div className={css.signatureCaption} contentEditable suppressContentEditableWarning>Authorized Signatory</div>
+                  <div className={css.signatureField} contentEditable suppressContentEditableWarning>Name: ___________________________</div>
+                  <div className={css.signatureField} contentEditable suppressContentEditableWarning>Designation: ____________________</div>
+                  <div className={css.signatureField} contentEditable suppressContentEditableWarning>Date: ___________________________</div>
+                  <div className={css.signatureField} contentEditable suppressContentEditableWarning>Company Seal:</div>
                 </div>
               </div>
             )}
@@ -468,13 +472,19 @@ export function ProposalPage() {
           {store.footerEnabled && (
             <div className={css.footer}>
               <div className={css.footerLabel}>For queries, please contact:</div>
-              <span className={css.footerGold}>{store.companyName}</span>
+              <span className={css.footerGold}>
+                <Editable value={store.companyName} onChange={store.setCompanyName} />
+              </span>
               <br />
-              {store.companyAddress}
+              <Editable value={store.companyAddress} onChange={store.setCompanyAddress} />
               <br />
-              {store.companyGst && <>GST: {store.companyGst} &nbsp;|&nbsp; </>}
-              {store.companyCin && <>CIN: {store.companyCin}<br /></>}
-              Email: {store.companyEmail} &nbsp;|&nbsp; Phone: {store.companyPhone}
+              GST: <Editable value={store.companyGst || '—'} onChange={store.setCompanyGst} />
+              &nbsp;|&nbsp;
+              CIN: <Editable value={store.companyCin || '—'} onChange={store.setCompanyCin} />
+              <br />
+              Email: <Editable value={store.companyEmail} onChange={store.setCompanyEmail} />
+              &nbsp;|&nbsp;
+              Phone: <Editable value={store.companyPhone} onChange={store.setCompanyPhone} />
             </div>
           )}
         </div>
